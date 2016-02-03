@@ -17,4 +17,12 @@ class Customer(models.Model):
     def __str__(self):
         return self.name + str(self.pullups_count)
 
+
+class Coach(models.Model):
+    name = models.CharField(max_length=200)
+    experience = models.IntegerField(default=0)
+    price = models.FloatField(default=0)
+
+
+
 # Create your models here.
