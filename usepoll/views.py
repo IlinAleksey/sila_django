@@ -35,7 +35,7 @@ def events_request(request):
 
         exercizes_list = list(Exercise.objects.all())
         exercizes_serialized = [ExerciseSerializer(coach).data for coach in exercizes_list]
-        return HttpResponse(exercizes_serialized)
+        return HttpResponse(json.dumps(exercizes_serialized))
 
     if request.method == 'POST':
         return HttpResponse("POST")
