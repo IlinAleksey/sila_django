@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.renderers import JSONRenderer
 from .models import Coach
 from .models import CoachSerializer
 from .models import Exercise
@@ -14,31 +16,49 @@ def index(request):
 
 def coaches(request):
     if request.method == 'GET':
-        coaches_json = serializers.serialize("json", Coach.objects.all(), fields=('name', 'experience', 'price'))
-        coaches_list = list(Coach.objects.all())
-        coaches_serialized = [CoachSerializer(coach).data for coach in coaches_list]
-        print(coaches_serialized)
-        #coaches_dict = coaches.__
-        return HttpResponse(json.dumps(coaches_serialized))
+        testlogin = request.GET.get('testlogin','')
+        if testlogin == 'no':
+            return HttpResponseForbidden("testlogin = no")
+        coach_name = request.GET.get('name','')
+        print(coach_name)
+        if coach_name:
+            try:
+                coaches_list = Coach.objects.get(name=coach_name)
+            except ObjectDoesNotExist:
+                return HttpResponseBadRequest('Bad Request')
+            coaches_serialized = CoachSerializer(coaches_list)
+            print(coaches_serialized.data)
+            json_res = coaches_serialized.data
+            print(json_res)
+            return HttpResponse(str(json_res))
+        else:
+            coaches_list = list(Coach.objects.all())
+            coaches_serialized = [CoachSerializer(coach).data for coach in coaches_list]
+            return HttpResponse(json.dumps(coaches_serialized))
 
-    if request.method == 'POST':
-        return HttpResponse("POST")
-    return HttpResponse("Nwither post nor get")
+    return HttpResponseBadRequest('Bad Request')
 
 
 def events_request(request):
     if request.method == 'GET':
-        #events = Exercise.objects.all()
-        #print(events)
-        events_json = serializers.serialize("json", Exercise.objects.all(), fields=('name', 'event_date'))
-        #print(events_json)
+        testlogin = request.GET.get('testlogin','')
+        if testlogin == 'no':
+            return HttpResponseForbidden("testlogin = no")
 
         exercizes_list = list(Exercise.objects.all())
         exercizes_serialized = [ExerciseSerializer(coach).data for coach in exercizes_list]
         return HttpResponse(json.dumps(exercizes_serialized))
 
+    return HttpResponseBadRequest('Bad Request')
+
+
+def signup(request):
     if request.method == 'POST':
-        return HttpResponse("POST")
-    return HttpResponse("Nwither post nor get")
+        testlogin = request.POST.get('testlogin','')
+        if testlogin == 'no':
+            return HttpResponseForbidden("testlogin = no")
+        exercizes_list = list(Exercise.objects.all())
+    return HttpResponseBadRequest('Bad Request')
+
 
 # Create your views here.

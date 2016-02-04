@@ -12,6 +12,9 @@ class Exercise(models.Model):
     name = models.CharField(max_length=200)
     event_date = models.DateTimeField('date')
 
+    def __str__(self):
+        return '{0} {1}'.format(self.name, str(self.event_date))
+
 class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercise
@@ -32,6 +35,9 @@ class Coach(models.Model):
     experience = models.IntegerField(default=0)
     price = models.FloatField(default=0)
     image_url = models.CharField(max_length=200, default='')
+
+    def __str__(self):
+        return self.name
 
 
 class CoachSerializer(serializers.ModelSerializer):
