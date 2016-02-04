@@ -8,6 +8,9 @@ class Event(models.Model):
     def __str__(self):
         return self.name + self.event_date.__str__()
 
+class Exercise(models.Model):
+    name = models.CharField(max_length=200)
+    event_date = models.DateTimeField('date')
 
 class Customer(models.Model):
     #question = models.ForeignKey(Question, on_delete=models.CASCADE)
