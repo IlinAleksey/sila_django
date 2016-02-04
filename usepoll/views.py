@@ -19,7 +19,7 @@ def coaches(request):
         coaches_serialized = [CoachSerializer(coach).data for coach in coaches_list]
         print(coaches_serialized)
         #coaches_dict = coaches.__
-        return HttpResponse(coaches_serialized)
+        return HttpResponse(json.dumps(coaches_serialized))
 
     if request.method == 'POST':
         return HttpResponse("POST")
