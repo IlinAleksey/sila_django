@@ -31,12 +31,13 @@ class Coach(models.Model):
     name = models.CharField(max_length=200)
     experience = models.IntegerField(default=0)
     price = models.FloatField(default=0)
+    image_url = models.CharField(max_length=200, default='')
 
 
 class CoachSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coach
-        fields = ('name', 'experience', 'price')
+        fields = ('name', 'experience', 'price', 'image_url')
 
 
 # Create your models here.
