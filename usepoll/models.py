@@ -1,5 +1,5 @@
 from django.db import models
-
+from rest_framework import serializers
 
 class Event(models.Model):
     name = models.CharField(max_length=200)
@@ -11,6 +11,12 @@ class Event(models.Model):
 class Exercise(models.Model):
     name = models.CharField(max_length=200)
     event_date = models.DateTimeField('date')
+
+class ExerciseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exercise
+        fields = ('name', 'event_date')
+
 
 class Customer(models.Model):
     #question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -26,6 +32,11 @@ class Coach(models.Model):
     experience = models.IntegerField(default=0)
     price = models.FloatField(default=0)
 
+
+class CoachSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coach
+        fields = ('name', 'experience', 'price')
 
 
 # Create your models here.
