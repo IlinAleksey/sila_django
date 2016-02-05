@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.renderers import JSONRenderer
 from .models import Coach
 from .models import CoachSerializer
+from .models import CoachSerializerComplete
 from .models import Exercise
 from .models import ExerciseSerializer
 from django.core import serializers
@@ -27,7 +28,7 @@ def coaches(request):
                 coaches_list = Coach.objects.get(name=coach_name)
             except ObjectDoesNotExist:
                 return HttpResponseBadRequest('Bad Request')
-            coaches_serialized = CoachSerializer(coaches_list)
+            coaches_serialized = CoachSerializerComplete(coaches_list)
             print(coaches_serialized.data)
             json_res = coaches_serialized.data
             print(json_res)
@@ -37,7 +38,7 @@ def coaches(request):
                 coaches_list = Coach.objects.get(pk=object_id)
             except ObjectDoesNotExist:
                 return HttpResponseBadRequest('Bad Request')
-            coaches_serialized = CoachSerializer(coaches_list)
+            coaches_serialized = CoachSerializerComplete(coaches_list)
             print(coaches_serialized.data)
             json_res = coaches_serialized.data
             print(json_res)
