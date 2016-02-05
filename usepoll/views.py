@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest, JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.renderers import JSONRenderer
 from .models import Coach
@@ -32,7 +32,7 @@ def coaches(request):
             print(coaches_serialized.data)
             json_res = coaches_serialized.data
             print(json_res)
-            return HttpResponse(str(json_res))
+            return JsonResponse(json_res, content_type='application/json; charset=utf-8')
         if object_id:
             try:
                 coaches_list = Coach.objects.get(pk=object_id)
@@ -42,11 +42,11 @@ def coaches(request):
             print(coaches_serialized.data)
             json_res = coaches_serialized.data
             print(json_res)
-            return HttpResponse(str(json_res))
+            return JsonResponse(json_res, content_type='application/json; charset=utf-8', json_dumps_params={'ensure_ascii': False})
         else:
             coaches_list = list(Coach.objects.all())
             coaches_serialized = [CoachSerializer(coach).data for coach in coaches_list]
-            return HttpResponse(json.dumps(coaches_serialized))
+            return JsonResponse(coaches_serialized, safe=False, json_dumps_params={'ensure_ascii': False}, content_type='application/json; charset=utf-8')
 
     return HttpResponseBadRequest('Bad Request')
 
@@ -66,11 +66,11 @@ def events_request(request):
             print(exercizes_serialized.data)
             json_res = exercizes_serialized.data
             print(json_res)
-            return HttpResponse(str(json_res))
+            return JsonResponse(json_res, content_type='application/json; charset=utf-8', json_dumps_params={'ensure_ascii': False})
         else:
             exercizes_list = list(Exercise.objects.all())
             exercizes_serialized = [ExerciseSerializer(coach).data for coach in exercizes_list]
-            return HttpResponse(json.dumps(exercizes_serialized))
+            return JsonResponse(exercizes_serialized, content_type='application/json; charset=utf-8', json_dumps_params={'ensure_ascii': False}, safe=False)
 
     return HttpResponseBadRequest('Bad Request')
 
