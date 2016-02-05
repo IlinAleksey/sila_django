@@ -16,14 +16,25 @@ def index(request):
 
 def coaches(request):
     if request.method == 'GET':
-        testlogin = request.GET.get('testlogin','')
+        testlogin = request.GET.get('testlogin', '')
         if testlogin == 'no':
             return HttpResponseForbidden("testlogin = no")
-        coach_name = request.GET.get('name','')
-        print(coach_name)
+        coach_name = request.GET.get('name', '')
+        object_id = request.GET.get('id', '')
+        print(coach_name, object_id)
         if coach_name:
             try:
                 coaches_list = Coach.objects.get(name=coach_name)
+            except ObjectDoesNotExist:
+                return HttpResponseBadRequest('Bad Request')
+            coaches_serialized = CoachSerializer(coaches_list)
+            print(coaches_serialized.data)
+            json_res = coaches_serialized.data
+            print(json_res)
+            return HttpResponse(str(json_res))
+        if object_id:
+            try:
+                coaches_list = Coach.objects.get(pk=object_id)
             except ObjectDoesNotExist:
                 return HttpResponseBadRequest('Bad Request')
             coaches_serialized = CoachSerializer(coaches_list)
@@ -44,10 +55,21 @@ def events_request(request):
         testlogin = request.GET.get('testlogin','')
         if testlogin == 'no':
             return HttpResponseForbidden("testlogin = no")
-
-        exercizes_list = list(Exercise.objects.all())
-        exercizes_serialized = [ExerciseSerializer(coach).data for coach in exercizes_list]
-        return HttpResponse(json.dumps(exercizes_serialized))
+        object_id = request.GET.get('id', '')
+        if object_id:
+            try:
+                exercizes_list = Exercise.objects.get(pk=object_id)
+            except ObjectDoesNotExist:
+                return HttpResponseBadRequest('Bad Request')
+            exercizes_serialized = ExerciseSerializer(exercizes_list)
+            print(exercizes_serialized.data)
+            json_res = exercizes_serialized.data
+            print(json_res)
+            return HttpResponse(str(json_res))
+        else:
+            exercizes_list = list(Exercise.objects.all())
+            exercizes_serialized = [ExerciseSerializer(coach).data for coach in exercizes_list]
+            return HttpResponse(json.dumps(exercizes_serialized))
 
     return HttpResponseBadRequest('Bad Request')
 

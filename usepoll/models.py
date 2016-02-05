@@ -18,7 +18,7 @@ class Exercise(models.Model):
 class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercise
-        fields = ('name', 'event_date')
+        fields = ('id', 'name', 'event_date')
 
 
 class Customer(models.Model):
@@ -43,7 +43,7 @@ class Coach(models.Model):
 class CoachSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coach
-        fields = ('name', 'experience', 'price', 'image_url')
+        fields = ('id', 'name', 'experience', 'price', 'image_url')
 
 
 # Create your models here.
