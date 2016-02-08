@@ -3,11 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest, JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.renderers import JSONRenderer
-from .models import Coach
-from .models import CoachSerializer
-from .models import CoachSerializerComplete
-from .models import Exercise
-from .models import ExerciseSerializer
+from .models import *
 from django.core import serializers
 import json
 
@@ -70,6 +66,30 @@ def events_request(request):
         else:
             exercizes_list = list(Exercise.objects.all())
             exercizes_serialized = [ExerciseSerializer(coach).data for coach in exercizes_list]
+            return JsonResponse(exercizes_serialized, content_type='application/json; charset=utf-8', json_dumps_params={'ensure_ascii': False}, safe=False)
+
+    return HttpResponseBadRequest('Bad Request')
+
+
+def gyms_request(request):
+    if request.method == 'GET':
+        testlogin = request.GET.get('testlogin','')
+        if testlogin == 'no':
+            return HttpResponseForbidden("testlogin = no")
+        object_id = request.GET.get('id', '')
+        if object_id:
+            try:
+                exercizes_list = Gym.objects.get(pk=object_id)
+            except ObjectDoesNotExist:
+                return HttpResponseBadRequest('Bad Request')
+            exercizes_serialized = GymSerializer(exercizes_list)
+            print(exercizes_serialized.data)
+            json_res = exercizes_serialized.data
+            print(json_res)
+            return JsonResponse(json_res, content_type='application/json; charset=utf-8', json_dumps_params={'ensure_ascii': False})
+        else:
+            exercizes_list = list(Gym.objects.all())
+            exercizes_serialized = [GymSerializer(coach).data for coach in exercizes_list]
             return JsonResponse(exercizes_serialized, content_type='application/json; charset=utf-8', json_dumps_params={'ensure_ascii': False}, safe=False)
 
     return HttpResponseBadRequest('Bad Request')
