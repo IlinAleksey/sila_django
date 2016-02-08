@@ -44,6 +44,7 @@ class CoachSerializerComplete(serializers.ModelSerializer):
 class Gym(models.Model):
     name = models.CharField(max_length=200, default='')
     city = models.CharField(max_length=200, default='')
+    phone = models.CharField(max_length=200, default='', blank=True )
     address = models.CharField(max_length=200, default='', blank=True )
     image_url = models.CharField(max_length=200, default='', blank=True)
 
@@ -51,7 +52,7 @@ class Gym(models.Model):
 class GymSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gym
-        fields = ('id', 'name', 'address', 'city', 'image_url')
+        fields = ('id', 'name', 'address', 'phone', 'city', 'image_url')
 
 
 class Exercise(models.Model):
