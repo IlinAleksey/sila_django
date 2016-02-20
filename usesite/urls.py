@@ -22,6 +22,5 @@ admin.autodiscover()
 urlpatterns = [
     url(r'^polls/', include('usepoll.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    url(r'^', include('usepoll.urls')),
+    url(r'^', include('usepoll.urls'))
 ]
