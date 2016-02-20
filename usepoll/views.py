@@ -11,24 +11,22 @@ def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
 
-def coaches(request):
+def coaches_request(request):
     if request.method == 'GET':
         testlogin = request.GET.get('testlogin', '')
-        if testlogin == 'no':
-            return HttpResponseForbidden("testlogin = no")
         coach_name = request.GET.get('name', '')
         object_id = request.GET.get('id', '')
         print(coach_name, object_id)
-        if coach_name:
-            try:
-                coaches_list = Coach.objects.get(name=coach_name)
-            except ObjectDoesNotExist:
-                return HttpResponseBadRequest('Bad Request')
-            coaches_serialized = CoachSerializerComplete(coaches_list)
-            print(coaches_serialized.data)
-            json_res = coaches_serialized.data
-            print(json_res)
-            return JsonResponse(json_res, content_type='application/json; charset=utf-8')
+        # if coach_name:
+        #     try:
+        #         coaches_list = Coach.objects.get(name=coach_name)
+        #     except ObjectDoesNotExist:
+        #         return HttpResponseBadRequest('Bad Request')
+        #     coaches_serialized = CoachSerializerComplete(coaches_list)
+        #     print(coaches_serialized.data)
+        #     json_res = coaches_serialized.data
+        #     print(json_res)
+        #     return JsonResponse(json_res, content_type='application/json; charset=utf-8')
         if object_id:
             try:
                 coaches_list = Coach.objects.get(pk=object_id)
@@ -49,9 +47,6 @@ def coaches(request):
 
 def events_request(request):
     if request.method == 'GET':
-        testlogin = request.GET.get('testlogin','')
-        if testlogin == 'no':
-            return HttpResponseForbidden("testlogin = no")
         object_id = request.GET.get('id', '')
         if object_id:
             try:
@@ -73,9 +68,6 @@ def events_request(request):
 
 def gyms_request(request):
     if request.method == 'GET':
-        testlogin = request.GET.get('testlogin','')
-        if testlogin == 'no':
-            return HttpResponseForbidden("testlogin = no")
         object_id = request.GET.get('id', '')
         if object_id:
             try:
@@ -94,14 +86,6 @@ def gyms_request(request):
 
     return HttpResponseBadRequest('Bad Request')
 
-
-def signup(request):
-    if request.method == 'POST':
-        testlogin = request.POST.get('testlogin','')
-        if testlogin == 'no':
-            return HttpResponseForbidden("testlogin = no")
-        exercizes_list = list(Exercise.objects.all())
-    return HttpResponseBadRequest('Bad Request')
 
 
 # Create your views here.
